@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galaxy Sport - Catálogo de Pedidos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ionicons -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+      :root {
+        --bg-dark: #121212;
+        --bg-light: #1e1e1e;
+        --primary: #c44957;
+        --secondary: #f5c518;
+        --text-light: #f3f4f6;
+        --text-dark: #a0aec0;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+      }
+      .nav-scrolled {
+        background-color: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(12px);
+      }
+      .text-gradient {
+        background: linear-gradient(90deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .modal {
+        transition: opacity 0.3s ease-in-out;
+      }
+      .modal-content {
+        transition: transform 0.3s ease-in-out;
+      }
+      .category-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: var(--bg-light);
+      }
+      .category-btn.active,
+      .category-btn:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Estilos para el selector de tallas moderno */
+      .talla-radio-input {
+        display: none; /* Oculta el input de radio real */
+      }
+      .talla-radio-label {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border: 2px solid #4a4a4a;
+        border-radius: 0.5rem; /* rounded-lg */
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+      }
+      .talla-radio-label:hover {
+        border-color: var(--secondary);
+        color: var(--secondary);
+      }
+      /* Estilo para la talla seleccionada */
+      .talla-radio-input:checked + .talla-radio-label {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: white;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+
+  <body class="antialiased">
+    <!-- NAVBAR -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <a
+          href="#"
+          class="flex items-center space-x-3 text-2xl font-bold text-white tracking-wider"
+        >
+          <img
+            src="https://placehold.co/100x100/121212/f5c518?text=GS"
+            alt="Galaxy Sport Logo"
+            class="h-10 w-10 rounded-full border-2 border-[var(--secondary)]"
+          />
+          <span>GALAXY <span class="text-[var(--primary)]">SPORT</span></span>
+        </a>
+        <button
+          id="open-cart-button"
+          class="relative hover:text-[var(--secondary)] transition-colors duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          <span
+            id="cart-counter"
+            class="absolute -top-2 -right-2 bg-[var(--primary)] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+            >0</span
+          >
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section
+        id="home"
+        class="relative h-[60vh] md:h-[80vh] flex items-center justify-center text-center overflow-hidden"
+      >
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class="absolute inset-0 w-full h-full object-cover filter brightness-50"
+        >
+          <source src="assets/img/video.mp4" type="video/mp4" />
+        </video>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-[var(--bg-dark)] via-transparent to-transparent"
+        ></div>
+        <div class="relative z-10 container mx-auto px-6" data-aos="fade-up">
+          <h1
+            class="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-wider leading-tight"
+          >
+            Viste la pasión <br />
+            <span class="text-gradient">de tu equipo</span>
+          </h1>
+          <p class="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+            Selecciona tus camisetas favoritas y finaliza tu pedido directamente por WhatsApp.
+          </p>
+        </div>
+      </section>
+
+      <!-- CATÁLOGO -->
+      <section id="catalog" class="py-24">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-10" data-aos="fade-up">
+            <h2 class="text-4xl md:text-5xl font-bold">
+              Nuestro <span class="text-gradient">Catálogo</span>
+            </h2>
+            <p class="text-lg text-gray-400 mt-2">Novedades y clásicos inolvidables.</p>
+          </div>
+          <div
+            id="category-filters"
+            class="flex flex-wrap justify-center gap-3 md:gap-4 mb-12"
+            data-aos="fade-up"
+          >
+            <button
+              class="category-btn active font-semibold py-2 px-5 rounded-full"
+              data-category="all"
+            >
+              Todos
+            </button>
+            <button
+              class="category-btn font-semibold py-2 px-5 rounded-full"
+              data-category="europa"
+            >
+              Ligas Europeas
+            </button>
+            <button
+              class="category-btn font-semibold py-2 px-5 rounded-full"
+              data-category="selecciones"
+            >
+              Selecciones
+            </button>
+            <button
+              class="category-btn font-semibold py-2 px-5 rounded-full"
+              data-category="sudamerica"
+            >
+              Ligas Sudamericanas
+            </button>
+          </div>
+          <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="bg-[#0D0D0D] pt-16 pb-8">
+      <div class="container mx-auto px-6 text-center">
+        <a
+          href="#"
+          class="flex items-center justify-center space-x-3 text-2xl font-bold text-white tracking-wider"
+        >
+          <img
+            src="https://placehold.co/100x100/121212/f5c518?text=GS"
+            alt="Galaxy Sport Logo"
+            class="h-10 w-10 rounded-full border-2 border-[var(--secondary)]"
+          />
+          <span>GALAXY <span class="text-[var(--primary)]">SPORT</span></span>
+        </a>
+        <p class="text-[var(--text-dark)] mt-4 max-w-md mx-auto">
+          Tu pasión, nuestra misión. Ofreciendo las mejores camisetas de fútbol con calidad
+          garantizada.
+        </p>
+        <hr class="border-gray-800 my-8" />
+        <p class="text-center text-gray-600">
+          &copy; 2024 Galaxy Sport. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- MODAL DEL CARRITO -->
+    <div
+      id="cart-modal"
+      class="modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
+    >
+      <div
+        class="modal-content bg-[var(--bg-light)] w-full max-w-lg rounded-xl shadow-2xl m-4 transform scale-95"
+      >
+        <div class="flex justify-between items-center p-5 border-b border-gray-700">
+          <h3 class="text-2xl font-bold">Tu Pedido</h3>
+          <button
+            id="close-cart-button"
+            class="text-3xl hover:text-[var(--primary)] transition-colors"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="cart-items" class="p-5 max-h-[25vh] overflow-y-auto"></div>
+        <div class="p-5 border-t border-gray-700">
+          <div class="flex justify-between items-center mb-4 text-xl">
+            <span class="font-semibold">Total:</span>
+            <span id="cart-total" class="font-bold text-[var(--secondary)]">$0.00</span>
+          </div>
+          <button
+            id="whatsapp-button"
+            class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-colors"
+          >
+            <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
+            Confirmar Pedido por WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE OPCIONES DE PRODUCTO (CON GALERÍA) -->
+    <div
+      id="options-modal"
+      class="modal fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
+    >
+      <div
+        id="options-modal-content"
+        class="modal-content bg-[var(--bg-light)] w-full max-w-2xl rounded-2xl shadow-2xl m-4 transform scale-95 flex flex-col max-h-[95vh]"
+      >
+        <div class="flex justify-between items-center p-5 border-b border-gray-800 flex-shrink-0">
+          <h3 id="options-title" class="text-xl font-semibold">Elige tus Opciones</h3>
+          <button
+            id="close-options-button"
+            class="text-gray-500 hover:text-[var(--primary)] transition-colors text-2xl"
+          >
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+            <div class="mb-6 md:mb-0">
+              <img
+                id="options-image"
+                src=""
+                alt="Producto"
+                class="w-full h-auto object-cover rounded-xl shadow-lg mb-4"
+              />
+              <div id="options-gallery" class="flex justify-center gap-3"></div>
+            </div>
+
+            <div>
+              <form id="options-form" class="flex flex-col h-full">
+                <div class="mb-5">
+                  <label class="block mb-3 font-semibold text-md">Talla:</label>
+                  <div id="talla-selector-container" class="flex flex-wrap gap-3"></div>
+                </div>
+
+                <div id="personalizacion-fields" class="hidden">
+                  <div class="border-t border-gray-800 pt-5 mt-5">
+                    <h4 class="font-semibold text-md mb-3">
+                      Personalización
+                      <span class="text-xs text-[var(--primary)] font-bold">(+ $5.00)</span>
+                    </h4>
+                    <div class="mb-4">
+                      <label for="player-name" class="block mb-2 font-medium text-sm text-gray-400"
+                        >Nombre:</label
+                      >
+                      <input
+                        type="text"
+                        id="player-name"
+                        placeholder="Ej: MBAPPÉ"
+                        class="w-full bg-[#2a2a2a] border-2 border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        for="player-number"
+                        class="block mb-2 font-medium text-sm text-gray-400"
+                        >Número:</label
+                      >
+                      <input
+                        type="number"
+                        id="player-number"
+                        placeholder="Ej: 7"
+                        class="w-full bg-[#2a2a2a] border-2 border-gray-700 rounded-lg p-2.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 mt-auto border-t border-gray-800 flex-shrink-0">
+          <button
+            type="submit"
+            form="options-form"
+            id="add-from-options-btn"
+            class="w-full bg-[var(--primary)] text-white font-bold py-3 px-6 rounded-xl text-lg flex items-center justify-center gap-3 hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-[var(--primary)/50%]"
+          >
+            <ion-icon name="add-circle-outline" class="text-2xl"></ion-icon>
+            Añadir al Pedido
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // =================================================================
+        // ===== 1. CONFIGURACIÓN: MODIFICA ESTA SECCIÓN ===================
+        // =================================================================
+
+        const tuNumeroDeWhatsApp = "584121234567";
+
+        const productos = [
+          {
+            id: 1,
+            nombre: "FC Barcelona 23/24",
+            descripcion: "Versión Jugador",
+            precio: 25.0,
+            imagen: "assets/img/85673b79.jpg",
+            galeria: [
+              "assets/img/85673b79.jpg",
+              "assets/img/709c2bfa.jpg",
+              "assets/img/926c281f.jpg",
+            ],
+            categoria: "europa",
+            personalizable: true,
+            costoPersonalizacion: 5.0,
+            tallas: ["S", "M", "L", "XL"],
+          },
+          {
+            id: 2,
+            nombre: "Juventus FC 23/24",
+            descripcion: "Versión Visitante",
+            precio: 25.0,
+            imagen: "assets/img/15d72690.jpg",
+            galeria: ["assets/img/15d72690.jpg"],
+            categoria: "europa",
+            personalizable: false,
+            tallas: ["M", "L"],
+          },
+          {
+            id: 3,
+            nombre: "Villarreal CF 23/24",
+            descripcion: "Versión Local",
+            precio: 25.0,
+            imagen: "assets/img/3de3ba71.jpg",
+            galeria: ["assets/img/3de3ba71.jpg"],
+            categoria: "europa",
+            personalizable: true,
+            costoPersonalizacion: 5.0,
+            tallas: ["S", "M", "L", "XL"],
+          },
+          {
+            id: 4,
+            nombre: "Real Madrid 23/24",
+            descripcion: "Tercera Equipación",
+            precio: 25.0,
+            imagen: "assets/img/610cc7ed.jpg",
+            galeria: [
+              "assets/img/610cc7ed.jpg",
+              "https://placehold.co/400x400/1E1E1E/f3f4f6?text=Dorso",
+            ],
+            categoria: "europa",
+            personalizable: true,
+            costoPersonalizacion: 5.0,
+            tallas: ["S", "M", "L", "XL"],
+          },
+          {
+            id: 5,
+            nombre: "Atlético Madrid 23/24",
+            descripcion: "BARRIOS #8",
+            precio: 30.0,
+            imagen: "assets/img/964e2175.jpg",
+            galeria: ["assets/img/964e2175.jpg"],
+            categoria: "europa",
+            personalizable: false,
+            tallas: ["L"],
+          },
+          {
+            id: 6,
+            nombre: "Borussia Dortmund 22/23",
+            descripcion: "Versión Local",
+            precio: 25.0,
+            imagen: "assets/img/32ed28d1.jpg",
+            galeria: ["assets/img/32ed28d1.jpg"],
+            categoria: "europa",
+            personalizable: true,
+            costoPersonalizacion: 5.0,
+            tallas: ["S", "M", "L"],
+          },
+          {
+            id: 7,
+            nombre: "Paris Saint-Germain 22/23",
+            descripcion: "Versión Visitante",
+            precio: 25.0,
+            imagen: "assets/img/daba8c04.jpg",
+            galeria: ["assets/img/daba8c04.jpg"],
+            categoria: "europa",
+            personalizable: true,
+            costoPersonalizacion: 5.0,
+            tallas: ["S", "M", "L", "XL"],
+          },
+        ];
+
+        // =================================================================
+        // ===== FIN DE LA CONFIGURACIÓN ===================================
+        // =================================================================
+
+        let carrito = [];
+        const productGrid = document.getElementById("product-grid");
+        const categoryFilters = document.getElementById("category-filters");
+
+        const openCartButton = document.getElementById("open-cart-button");
+        const closeCartButton = document.getElementById("close-cart-button");
+        const cartModal = document.getElementById("cart-modal");
+        const cartItemsContainer = document.getElementById("cart-items");
+        const cartCounter = document.getElementById("cart-counter");
+        const cartTotal = document.getElementById("cart-total");
+        const whatsappButton = document.getElementById("whatsapp-button");
+
+        const optionsModal = document.getElementById("options-modal");
+        const closeOptionsButton = document.getElementById("close-options-button");
+        const optionsForm = document.getElementById("options-form");
+        const optionsTitle = document.getElementById("options-title");
+        const optionsImage = document.getElementById("options-image");
+        const optionsGallery = document.getElementById("options-gallery"); // <-- Nuevo selector
+        const tallaSelect = document.getElementById("talla-select");
+        const personalizacionFields = document.getElementById("personalizacion-fields");
+        const playerNameInput = document.getElementById("player-name");
+        const playerNumberInput = document.getElementById("player-number");
+
+        function renderizarProductos(categoriaFiltro = "all") {
+          productGrid.innerHTML = "";
+          const productosFiltrados =
+            categoriaFiltro === "all"
+              ? productos
+              : productos.filter((p) => p.categoria === categoriaFiltro);
+          if (productosFiltrados.length === 0) {
+            productGrid.innerHTML = `<p class="col-span-full text-center text-gray-400 text-lg">No hay productos en esta categoría.</p>`;
+            return;
+          }
+          productosFiltrados.forEach((producto) => {
+            const productoHTML = `
+                    <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105" data-aos="fade-up">
+                        <div class="relative overflow-hidden">
+                            <img src="${producto.imagen}" alt="${
+              producto.nombre
+            }" class="w-full h-80 object-cover">
+                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
+                                  producto.id
+                                }">Añadir al Pedido</button>
+                            </div>
+                        </div>
+                        <div class="p-5 text-center">
+                            <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
+                            <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
+                            <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
+                              2
+                            )}</p>
+                        </div>
+                    </div>`;
+            productGrid.innerHTML += productoHTML;
+          });
+          AOS.refresh();
+        }
+
+        function abrirModalOpciones(idProducto) {
+          const producto = productos.find((p) => p.id === idProducto);
+          if (!producto) return;
+
+          optionsTitle.textContent = producto.nombre;
+          optionsForm.dataset.productId = idProducto;
+
+          // Lógica de la galería
+          optionsGallery.innerHTML = "";
+          if (producto.galeria && producto.galeria.length > 0) {
+            optionsImage.src = producto.galeria[0];
+            producto.galeria.forEach((imgUrl, index) => {
+              const thumb = document.createElement("img");
+              thumb.src = imgUrl;
+              thumb.alt = `Vista ${index + 1}`;
+              thumb.className =
+                "w-12 h-12 object-cover rounded-md cursor-pointer border-2 hover:border-[var(--primary)] transition-all";
+              thumb.classList.toggle("border-[var(--primary)]", index === 0); // Activar el primer thumbnail
+              thumb.dataset.fullSrc = imgUrl;
+              optionsGallery.appendChild(thumb);
+            });
+          } else {
+            optionsImage.src = producto.imagen;
+          }
+
+          const tallaContainer = document.getElementById("talla-selector-container");
+          tallaContainer.innerHTML = "";
+          producto.tallas.forEach((talla, index) => {
+            const isChecked = index === 0 ? "checked" : ""; // Selecciona la primera talla por defecto
+            tallaContainer.innerHTML += `
+        <div>
+            <input type="radio" id="talla-${talla}" name="talla" value="${talla}" class="talla-radio-input" ${isChecked}>
+            <label for="talla-${talla}" class="talla-radio-label">${talla}</label>
+        </div>
+    `;
+          });
+
+          if (producto.personalizable) {
+            personalizacionFields.classList.remove("hidden");
+          } else {
+            personalizacionFields.classList.add("hidden");
+          }
+
+          playerNameInput.value = "";
+          playerNumberInput.value = "";
+
+          optionsModal.classList.remove("opacity-0", "pointer-events-none");
+          document.getElementById("options-modal-content").classList.remove("scale-95");
+        }
+
+        function cerrarModalOpciones() {
+          optionsModal.classList.add("opacity-0", "pointer-events-none");
+          document.getElementById("options-modal-content").classList.add("scale-95");
+        }
+
+        function agregarAlCarrito(item) {
+          carrito.push(item);
+          actualizarCarrito();
+        }
+        function quitarDelCarrito(cartItemId) {
+          carrito = carrito.filter((item) => item.cartItemId !== cartItemId);
+          actualizarCarrito();
+        }
+        function actualizarCarrito() {
+          renderizarItemsCarrito();
+          actualizarTotal();
+          actualizarContadorCarrito();
+        }
+
+        function renderizarItemsCarrito() {
+          cartItemsContainer.innerHTML = "";
+          if (carrito.length === 0) {
+            cartItemsContainer.innerHTML =
+              '<p class="text-gray-400 text-center">Tu pedido está vacío.</p>';
+            return;
+          }
+          carrito.forEach((item) => {
+            let detalles = `Talla: ${item.talla}`;
+            if (item.nombreJugador) {
+              detalles += ` | ${item.nombreJugador} #${item.numeroJugador}`;
+            }
+            const itemHTML = `
+                    <div class="flex items-center justify-between gap-4 py-3">
+                        <img src="${item.imagen}" alt="${
+              item.nombre
+            }" class="w-16 h-16 rounded-md object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold">${item.nombre}</h4>
+                            <p class="text-sm text-gray-400">${detalles}</p>
+                            <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
+                              2
+                            )}</p>
+                        </div>
+                        <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
+                          item.cartItemId
+                        }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
+                    </div>`;
+            cartItemsContainer.innerHTML += itemHTML;
+          });
+        }
+
+        function actualizarTotal() {
+          const total = carrito.reduce((acc, item) => acc + item.precioFinal, 0);
+          cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function actualizarContadorCarrito() {
+          cartCounter.textContent = carrito.length;
+        }
+
+        function enviarPedidoWhatsApp() {
+          if (carrito.length === 0) {
+            alert("Tu pedido está vacío.");
+            return;
+          }
+          let mensaje =
+            "¡Hola Galaxy Sport! 👋 Quiero hacer un pedido con los siguientes productos:\n\n";
+          carrito.forEach((item) => {
+            let detalleItem = `- ${item.nombre} (Talla: ${item.talla}`;
+            if (item.nombreJugador && item.numeroJugador) {
+              detalleItem += `, Nombre: ${item.nombreJugador}, #${item.numeroJugador}`;
+            }
+            detalleItem += `) - $${item.precioFinal.toFixed(2)}\n`;
+            mensaje += detalleItem;
+          });
+          const total = carrito.reduce((acc, item) => acc + item.precioFinal, 0);
+          mensaje += `\n*Total a pagar: $${total.toFixed(
+            2
+          )}*\n\nEspero su respuesta para coordinar. ¡Gracias!`;
+          const urlWhatsApp = `https://wa.me/${tuNumeroDeWhatsApp}?text=${encodeURIComponent(
+            mensaje
+          )}`;
+          window.open(urlWhatsApp, "_blank");
+        }
+
+        // --- EVENT LISTENERS ---
+        productGrid.addEventListener("click", (e) => {
+          if (e.target.classList.contains("open-options-btn")) {
+            abrirModalOpciones(parseInt(e.target.dataset.id));
+          }
+        });
+
+        optionsForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const productId = parseInt(e.target.dataset.productId);
+          const productoBase = productos.find((p) => p.id === productId);
+          const nombreJugador = playerNameInput.value.trim().toUpperCase();
+          const numeroJugador = playerNumberInput.value.trim();
+          let precioFinal = productoBase.precio;
+          if (productoBase.personalizable && (nombreJugador || numeroJugador)) {
+            precioFinal += productoBase.costoPersonalizacion;
+          }
+          const tallaSeleccionada = document.querySelector('input[name="talla"]:checked').value;
+          const itemParaCarrito = {
+            ...productoBase,
+            cartItemId: Date.now(),
+            talla: tallaSeleccionada,
+            nombreJugador,
+            numeroJugador,
+            precioFinal,
+          };
+          agregarAlCarrito(itemParaCarrito);
+          cerrarModalOpciones();
+        });
+
+        // <-- Nuevo Listener para la galería
+        optionsGallery.addEventListener("click", (e) => {
+          if (e.target.tagName === "IMG" && e.target.dataset.fullSrc) {
+            optionsImage.src = e.target.dataset.fullSrc;
+            [...e.target.parentElement.children].forEach((child) =>
+              child.classList.remove("border-[var(--primary)]")
+            );
+            e.target.classList.add("border-[var(--primary)]");
+          }
+        });
+
+        cartItemsContainer.addEventListener("click", (e) => {
+          const btn = e.target.closest(".remove-from-cart-btn");
+          if (btn) {
+            quitarDelCarrito(parseInt(btn.dataset.id));
+          }
+        });
+        categoryFilters.addEventListener("click", (e) => {
+          if (e.target.tagName === "BUTTON") {
+            const activeBtn = document.querySelector(".category-btn.active");
+            if (activeBtn) activeBtn.classList.remove("active");
+            e.target.classList.add("active");
+            renderizarProductos(e.target.dataset.category);
+          }
+        });
+        openCartButton.addEventListener("click", () => {
+          cartModal.classList.remove("opacity-0", "pointer-events-none");
+          document.getElementById("cart-modal-content").classList.remove("scale-95");
+        });
+        closeCartButton.addEventListener("click", () => {
+          cartModal.classList.add("opacity-0", "pointer-events-none");
+          document.getElementById("cart-modal-content").classList.add("scale-95");
+        });
+        closeOptionsButton.addEventListener("click", cerrarModalOpciones);
+        whatsappButton.addEventListener("click", enviarPedidoWhatsApp);
+        cartModal.addEventListener("click", (e) => {
+          if (e.target === cartModal) {
+            cartModal.classList.add("opacity-0", "pointer-events-none");
+            document.getElementById("cart-modal-content").classList.add("scale-95");
+          }
+        });
+        optionsModal.addEventListener("click", (e) => {
+          if (e.target === optionsModal) cerrarModalOpciones();
+        });
+
+        AOS.init({ duration: 800, once: true, offset: 50 });
+        renderizarProductos();
+      });
+    </script>
+  </body>
+</html>
