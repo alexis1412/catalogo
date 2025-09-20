@@ -1,3 +1,102 @@
 @import "tailwindcss";
 
- 
+   :root {
+        --bg-dark: #121212;
+        --bg-light: #1e1e1e;
+        --primary: #c44957;
+        --secondary: #f5c518;
+        --text-light: #f3f4f6;
+        --text-dark: #a0aec0;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+      }
+      .nav-scrolled {
+        background-color: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(12px);
+      }
+      .text-gradient {
+        background: linear-gradient(90deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .modal {
+        transition: opacity 0.3s ease-in-out;
+      }
+      .modal-content {
+        transition: transform 0.3s ease-in-out;
+      }
+      .category-btn {
+        transition: all 0.2s ease-in-out;
+        background-color: var(--bg-light);
+      }
+      .category-btn.active,
+      .category-btn:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(196, 73, 87, 0.3);
+      }
+
+      .talla-radio-input {
+        display: none;
+      }
+      .talla-radio-label {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border: 2px solid #4a4a4a;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+      }
+      .talla-radio-label:hover {
+        border-color: var(--secondary);
+        color: var(--secondary);
+      }
+      .talla-radio-input:checked + .talla-radio-label {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      #toast-notification {
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .cart-pop {
+        animation: pop 0.3s ease-in-out;
+      }
+
+      #back-to-top-btn {
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        transform: translateY(20px);
+      }
+      #back-to-top-btn.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      /* NUEVO: Estilos para botones deshabilitados */
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .open-options-btn:disabled {
+        background-color: #555 !important;
+        color: #999 !important;
+      }
