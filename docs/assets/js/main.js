@@ -2,7 +2,7 @@ import { productos } from "./productos.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // CONFIGURACIÓN
-  const tuNumeroDeWhatsApp = "584121234567";
+  const tuNumeroDeWhatsApp = "584124618344";
 
   // SELECTORES DEL DOM
   let carrito = [];
