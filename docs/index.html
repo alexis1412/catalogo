@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galaxy Sport - Catálogo de Pedidos 2.0</title>
+    <title>Galaxy Sport - Catálogo de Pedidos 2.1</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -91,12 +91,10 @@
         transform: scale(1.05);
       }
 
-      /* Estilos para la notificación Toast */
       #toast-notification {
         transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
       }
 
-      /* Animación para el contador del carrito */
       @keyframes pop {
         0% {
           transform: scale(1);
@@ -112,7 +110,6 @@
         animation: pop 0.3s ease-in-out;
       }
 
-      /* Estilos para el botón de volver arriba */
       #back-to-top-btn {
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         transform: translateY(20px);
@@ -121,6 +118,15 @@
         opacity: 1;
         pointer-events: auto;
         transform: translateY(0);
+      }
+      /* NUEVO: Estilos para botones deshabilitados */
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .open-options-btn:disabled {
+        background-color: #555 !important;
+        color: #999 !important;
       }
     </style>
   </head>
@@ -201,18 +207,34 @@
             <p class="text-lg text-gray-400 mt-2">Novedades y clásicos inolvidables.</p>
           </div>
 
-          <!-- Barra de Búsqueda -->
-          <div class="max-w-xl mx-auto mb-12" data-aos="fade-up">
-            <div class="relative">
+          <!-- Filtros y Búsqueda -->
+          <div
+            class="flex flex-col md:flex-row gap-6 items-center max-w-4xl mx-auto mb-12"
+            data-aos="fade-up"
+          >
+            <!-- Barra de Búsqueda -->
+            <div class="relative w-full md:flex-1">
               <input
                 type="text"
                 id="search-input"
                 placeholder="Buscar por equipo, liga, jugador..."
                 class="w-full bg-[var(--bg-light)] border-2 border-gray-700 rounded-full py-3 pl-6 pr-14 text-white placeholder-gray-500 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all"
               />
-              <div class="absolute inset-y-0 right-0 flex items-center pr-5">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
                 <ion-icon name="search-outline" class="text-gray-500 text-2xl"></ion-icon>
               </div>
+            </div>
+            <!-- Filtro de Ordenamiento -->
+            <div class="w-full md:w-auto">
+              <select
+                id="sort-select"
+                class="w-full bg-[var(--bg-light)] border-2 border-gray-700 rounded-full py-3 px-5 text-white focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all appearance-none"
+              >
+                <option value="default">Ordenar por defecto</option>
+                <option value="price-asc">Precio: Más bajo a más alto</option>
+                <option value="price-desc">Precio: Más alto a más bajo</option>
+                <option value="newest">Más nuevos primero</option>
+              </select>
             </div>
           </div>
 
@@ -247,7 +269,6 @@
           garantizada.
         </p>
 
-        <!-- Íconos de redes sociales -->
         <div class="flex justify-center space-x-6 mt-6">
           <a href="#" class="text-gray-500 hover:text-[var(--primary)] transition-colors text-3xl"
             ><ion-icon name="logo-instagram"></ion-icon
@@ -293,7 +314,7 @@
           </div>
           <button
             id="whatsapp-button"
-            class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed"
+            class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-colors disabled:bg-gray-500"
           >
             <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
             Confirmar Pedido por WhatsApp
@@ -391,7 +412,6 @@
       </div>
     </div>
 
-    <!-- Contenedor para notificaciones Toast -->
     <div
       id="toast-notification"
       class="fixed bottom-5 right-5 z-[100] bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg flex items-center gap-3 transform translate-y-20 opacity-0 pointer-events-none"
@@ -400,7 +420,6 @@
       <span id="toast-message"></span>
     </div>
 
-    <!-- Botón para volver arriba -->
     <button
       id="back-to-top-btn"
       class="fixed bottom-8 right-8 z-[55] bg-[var(--primary)] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:opacity-80 transition-all opacity-0 pointer-events-none"
@@ -410,7 +429,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // CORRECCIÓN: Se mueven los datos de los productos aquí para evitar errores de carga.
+        // DATOS DE LOS PRODUCTOS
         const productos = [
           {
             id: 1,
@@ -429,12 +448,13 @@
             tallas: ["S", "M", "L", "XL"],
             nuevo: true,
             tags: ["barcelona", "barça", "la liga", "españa"],
+            disponible: true,
           },
           {
             id: 2,
             nombre: "Juventus FC 23/24",
             descripcion: "Versión Visitante",
-            precio: 25.0,
+            precio: 28.0,
             imagen: "assets/img/15d72690.jpg",
             galeria: ["assets/img/15d72690.jpg"],
             categoria: "europa",
@@ -442,6 +462,7 @@
             tallas: ["M", "L"],
             nuevo: false,
             tags: ["juventus", "juve", "serie a", "italia"],
+            disponible: false,
           },
           {
             id: 3,
@@ -456,12 +477,13 @@
             tallas: ["S", "M", "L", "XL"],
             nuevo: false,
             tags: ["villarreal", "la liga", "españa"],
+            disponible: true,
           },
           {
             id: 4,
             nombre: "Real Madrid 23/24",
             descripcion: "Tercera Equipación",
-            precio: 25.0,
+            precio: 30.0,
             imagen: "assets/img/610cc7ed.jpg",
             galeria: [
               "assets/img/610cc7ed.jpg",
@@ -471,8 +493,9 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L", "XL"],
-            nuevo: false,
+            nuevo: true,
             tags: ["real madrid", "halamadrid", "la liga", "españa"],
+            disponible: true,
           },
           {
             id: 5,
@@ -486,6 +509,7 @@
             tallas: ["L"],
             nuevo: true,
             tags: ["atletico madrid", "atleti", "barrios", "la liga"],
+            disponible: true,
           },
           {
             id: 6,
@@ -500,12 +524,13 @@
             tallas: ["S", "M", "L"],
             nuevo: false,
             tags: ["borussia", "dortmund", "bvb", "bundesliga", "alemania"],
+            disponible: true,
           },
           {
             id: 7,
             nombre: "Paris Saint-Germain 22/23",
             descripcion: "Versión Visitante",
-            precio: 25.0,
+            precio: 22.5,
             imagen: "assets/img/daba8c04.jpg",
             galeria: ["assets/img/daba8c04.jpg"],
             categoria: "europa",
@@ -514,24 +539,19 @@
             tallas: ["S", "M", "L", "XL"],
             nuevo: false,
             tags: ["psg", "paris", "ligue 1", "francia", "mbappe"],
+            disponible: false,
           },
         ];
 
-        // =================================================================
-        // ===== 1. CONFIGURACIÓN ==========================================
-        // =================================================================
-
+        // CONFIGURACIÓN
         const tuNumeroDeWhatsApp = "584121234567";
 
-        // =================================================================
-        // ===== FIN DE LA CONFIGURACIÓN ===================================
-        // =================================================================
-
+        // SELECTORES DEL DOM
         let carrito = [];
         const productGrid = document.getElementById("product-grid");
         const categoryFilters = document.getElementById("category-filters");
         const searchInput = document.getElementById("search-input");
-
+        const sortSelect = document.getElementById("sort-select");
         const openCartButton = document.getElementById("open-cart-button");
         const closeCartButton = document.getElementById("close-cart-button");
         const cartModal = document.getElementById("cart-modal");
@@ -539,7 +559,6 @@
         const cartCounter = document.getElementById("cart-counter");
         const cartTotal = document.getElementById("cart-total");
         const whatsappButton = document.getElementById("whatsapp-button");
-
         const optionsModal = document.getElementById("options-modal");
         const closeOptionsButton = document.getElementById("close-options-button");
         const optionsForm = document.getElementById("options-form");
@@ -549,39 +568,12 @@
         const personalizacionFields = document.getElementById("personalizacion-fields");
         const playerNameInput = document.getElementById("player-name");
         const playerNumberInput = document.getElementById("player-number");
-
         const toast = document.getElementById("toast-notification");
         const toastMessage = document.getElementById("toast-message");
         const header = document.getElementById("header");
         const backToTopButton = document.getElementById("back-to-top-btn");
 
-        // --- MANEJADORES DE EVENTOS GLOBALES ---
-
-        window.addEventListener("scroll", () => {
-          // Efecto de scroll en la barra de navegación
-          if (window.scrollY > 50) {
-            header.classList.add("nav-scrolled");
-          } else {
-            header.classList.remove("nav-scrolled");
-          }
-
-          // Mostrar/ocultar botón de volver arriba
-          if (window.scrollY > 400) {
-            backToTopButton.classList.add("show");
-          } else {
-            backToTopButton.classList.remove("show");
-          }
-        });
-
-        // Evento click para el botón de volver arriba
-        backToTopButton.addEventListener("click", () => {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
-        });
-
-        // --- FUNCIONES DE LA APLICACIÓN ---
+        // FUNCIONES DE LA APLICACIÓN
 
         function cargarCarritoDesdeStorage() {
           const carritoGuardado = localStorage.getItem("galaxySportCart");
@@ -619,56 +611,76 @@
           });
         }
 
-        function renderizarProductos(filtro = "all", busqueda = "") {
+        function renderizarProductos() {
           productGrid.innerHTML = "";
+          const filtroCategoria =
+            document.querySelector(".category-btn.active")?.dataset.category || "all";
+          const terminoBusqueda = searchInput.value.toLowerCase().trim();
+          const sortValue = sortSelect.value;
 
-          let productosFiltrados = productos;
+          let productosFiltrados = productos.filter((p) => {
+            const pasaCategoria = filtroCategoria === "all" || p.categoria === filtroCategoria;
+            const pasaBusqueda =
+              !terminoBusqueda ||
+              p.nombre.toLowerCase().includes(terminoBusqueda) ||
+              p.descripcion.toLowerCase().includes(terminoBusqueda) ||
+              (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(terminoBusqueda)));
+            return pasaCategoria && pasaBusqueda;
+          });
 
-          if (filtro !== "all") {
-            productosFiltrados = productosFiltrados.filter((p) => p.categoria === filtro);
+          let productosAMostrar = [...productosFiltrados];
+          switch (sortValue) {
+            case "price-asc":
+              productosAMostrar.sort((a, b) => a.precio - b.precio);
+              break;
+            case "price-desc":
+              productosAMostrar.sort((a, b) => b.precio - a.precio);
+              break;
+            case "newest":
+              productosAMostrar.sort((a, b) => (b.nuevo === a.nuevo ? 0 : b.nuevo ? 1 : -1));
+              break;
           }
 
-          if (busqueda) {
-            busqueda = busqueda.toLowerCase();
-            productosFiltrados = productosFiltrados.filter(
-              (p) =>
-                p.nombre.toLowerCase().includes(busqueda) ||
-                p.descripcion.toLowerCase().includes(busqueda) ||
-                (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(busqueda)))
-            );
-          }
-
-          if (productosFiltrados.length === 0) {
+          if (productosAMostrar.length === 0) {
             productGrid.innerHTML = `<p class="col-span-full text-center text-gray-400 text-lg">No se encontraron productos.</p>`;
             return;
           }
 
-          productosFiltrados.forEach((producto) => {
+          productosAMostrar.forEach((producto) => {
+            const estaAgotado = !producto.disponible;
             const productoHTML = `
-                <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[var(--primary)/20%]" data-aos="fade-up">
-                    <div class="relative overflow-hidden">
-                        ${
-                          producto.nuevo
-                            ? '<span class="absolute top-3 left-3 bg-[var(--secondary)] text-black text-xs font-bold px-3 py-1 rounded-full z-10">NUEVO</span>'
-                            : ""
-                        }
-                        <img src="${producto.imagen}" alt="${
+              <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[var(--primary)/20%] ${
+                estaAgotado ? "opacity-60" : ""
+              }" data-aos="fade-up">
+                <div class="relative overflow-hidden">
+                  ${
+                    producto.nuevo
+                      ? '<span class="absolute top-3 left-3 bg-[var(--secondary)] text-black text-xs font-bold px-3 py-1 rounded-full z-10">NUEVO</span>'
+                      : ""
+                  }
+                  <span class="absolute top-3 right-3 text-white text-xs font-bold px-3 py-1 rounded-full z-10 ${
+                    estaAgotado ? "bg-red-600" : "bg-green-500"
+                  }">${estaAgotado ? "AGOTADO" : "DISPONIBLE"}</span>
+
+                  <img src="${producto.imagen}" alt="${
               producto.nombre
             }" loading="lazy" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
-                              producto.id
-                            }">Añadir al Pedido</button>
-                        </div>
-                    </div>
-                    <div class="p-5 text-center">
-                        <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
-                        <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
-                        <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
-                          2
-                        )}</p>
-                    </div>
-                </div>`;
+                  <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
+                      producto.id
+                    }" ${estaAgotado ? "disabled" : ""}>
+                      ${estaAgotado ? "No Disponible" : "Añadir al Pedido"}
+                    </button>
+                  </div>
+                </div>
+                <div class="p-5 text-center">
+                  <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
+                  <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
+                  <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
+                    2
+                  )}</p>
+                </div>
+              </div>`;
             productGrid.innerHTML += productoHTML;
           });
           AOS.refresh();
@@ -680,6 +692,8 @@
 
           optionsTitle.textContent = producto.nombre;
           optionsForm.dataset.productId = idProducto;
+
+          document.getElementById("add-from-options-btn").disabled = !producto.disponible;
 
           optionsGallery.innerHTML = "";
           if (producto.galeria && producto.galeria.length > 0) {
@@ -727,16 +741,38 @@
           document.getElementById("options-modal-content").classList.add("scale-95");
         }
 
-        function agregarAlCarrito(item) {
-          carrito.push(item);
+        function agregarAlCarrito(itemParaAgregar) {
+          const { id, talla, nombreJugador, numeroJugador } = itemParaAgregar;
+          const itemExistente = carrito.find(
+            (item) =>
+              item.id === id &&
+              item.talla === talla &&
+              item.nombreJugador === nombreJugador &&
+              item.numeroJugador === numeroJugador
+          );
+
+          if (itemExistente) {
+            itemExistente.cantidad++;
+          } else {
+            carrito.push({ ...itemParaAgregar, cantidad: 1 });
+          }
           actualizarCarrito();
           mostrarToast("¡Agregado al pedido!");
         }
-        function quitarDelCarrito(cartItemId) {
-          carrito = carrito.filter((item) => item.cartItemId !== cartItemId);
-          actualizarCarrito();
-          mostrarToast("Producto eliminado.");
+
+        function actualizarCantidad(cartItemId, nuevaCantidad) {
+          const itemIndex = carrito.findIndex((item) => item.cartItemId === cartItemId);
+          if (itemIndex > -1) {
+            if (nuevaCantidad <= 0) {
+              carrito.splice(itemIndex, 1);
+              mostrarToast("Producto eliminado.");
+            } else {
+              carrito[itemIndex].cantidad = nuevaCantidad;
+            }
+            actualizarCarrito();
+          }
         }
+
         function actualizarCarrito() {
           renderizarItemsCarrito();
           actualizarTotal();
@@ -748,10 +784,10 @@
           cartItemsContainer.innerHTML = "";
           if (carrito.length === 0) {
             cartItemsContainer.innerHTML = `<div class="text-center py-8">
-                  <ion-icon name="sad-outline" class="text-6xl text-gray-600"></ion-icon>
-                  <p class="text-gray-400 mt-2">Tu pedido está vacío.</p>
-                  <button id="close-and-shop" class="mt-4 bg-[var(--primary)] text-white font-bold py-2 px-6 rounded-full text-md hover:opacity-90 transition-all">Empezar a comprar</button>
-               </div>`;
+                <ion-icon name="sad-outline" class="text-6xl text-gray-600"></ion-icon>
+                <p class="text-gray-400 mt-2">Tu pedido está vacío.</p>
+                <button id="close-and-shop" class="mt-4 bg-[var(--primary)] text-white font-bold py-2 px-6 rounded-full text-md hover:opacity-90 transition-all">Empezar a comprar</button>
+              </div>`;
             whatsappButton.disabled = true;
             return;
           }
@@ -761,33 +797,38 @@
             if (item.nombreJugador) {
               detalles += ` | ${item.nombreJugador} #${item.numeroJugador}`;
             }
+            const subtotal = item.precioFinal * item.cantidad;
             const itemHTML = `
-                <div class="flex items-center justify-between gap-4 py-3">
-                    <img src="${item.imagen}" alt="${
+              <div class="flex items-center gap-4 py-3">
+                <img src="${item.imagen}" alt="${
               item.nombre
             }" class="w-16 h-16 rounded-md object-cover">
-                    <div class="flex-1">
-                        <h4 class="font-bold">${item.nombre}</h4>
-                        <p class="text-sm text-gray-400">${detalles}</p>
-                        <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
-                          2
-                        )}</p>
-                    </div>
-                    <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
+                <div class="flex-1">
+                  <h4 class="font-bold">${item.nombre}</h4>
+                  <p class="text-sm text-gray-400">${detalles}</p>
+                  <p class="text-[var(--secondary)] font-semibold">$${subtotal.toFixed(2)}</p>
+                </div>
+                <div class="flex items-center gap-3 bg-[var(--bg-dark)] p-1 rounded-full">
+                    <button class="quantity-btn w-7 h-7 flex items-center justify-center rounded-full bg-[var(--primary)]" data-id="${
                       item.cartItemId
-                    }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
-                </div>`;
+                    }" data-action="decrement">-</button>
+                    <span class="font-bold text-md w-5 text-center">${item.cantidad}</span>
+                    <button class="quantity-btn w-7 h-7 flex items-center justify-center rounded-full bg-[var(--primary)]" data-id="${
+                      item.cartItemId
+                    }" data-action="increment">+</button>
+                </div>
+              </div>`;
             cartItemsContainer.innerHTML += itemHTML;
           });
         }
 
         function actualizarTotal() {
-          const total = carrito.reduce((acc, item) => acc + item.precioFinal, 0);
+          const total = carrito.reduce((acc, item) => acc + item.precioFinal * item.cantidad, 0);
           cartTotal.textContent = `$${total.toFixed(2)}`;
         }
 
         function actualizarContadorCarrito() {
-          const totalItems = carrito.length;
+          const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
           cartCounter.textContent = totalItems;
           if (totalItems > 0 && document.activeElement.closest(".open-options-btn")) {
             cartCounter.classList.add("cart-pop");
@@ -800,15 +841,16 @@
           let mensaje =
             "¡Hola Galaxy Sport! 👋 Quiero hacer un pedido con los siguientes productos:\n\n";
           carrito.forEach((item) => {
-            let detalleItem = `*- ${item.nombre}*\n`;
+            let detalleItem = `*- ${item.nombre} (x${item.cantidad})*\n`;
             detalleItem += `  Talla: ${item.talla}\n`;
             if (item.nombreJugador && item.numeroJugador) {
               detalleItem += `  Personalización: ${item.nombreJugador}, #${item.numeroJugador}\n`;
             }
-            detalleItem += `  Precio: $${item.precioFinal.toFixed(2)}\n\n`;
+            const subtotal = item.precioFinal * item.cantidad;
+            detalleItem += `  Subtotal: $${subtotal.toFixed(2)}\n\n`;
             mensaje += detalleItem;
           });
-          const total = carrito.reduce((acc, item) => acc + item.precioFinal, 0);
+          const total = carrito.reduce((acc, item) => acc + item.precioFinal * item.cantidad, 0);
           mensaje += `*Total a pagar: $${total.toFixed(
             2
           )}*\n\nEspero su respuesta para coordinar. ¡Gracias!`;
@@ -818,10 +860,10 @@
           window.open(urlWhatsApp, "_blank");
         }
 
-        // --- EVENT LISTENERS ---
         productGrid.addEventListener("click", (e) => {
-          if (e.target.classList.contains("open-options-btn")) {
-            abrirModalOpciones(parseInt(e.target.dataset.id));
+          const optionsBtn = e.target.closest(".open-options-btn");
+          if (optionsBtn && !optionsBtn.disabled) {
+            abrirModalOpciones(parseInt(optionsBtn.dataset.id));
           }
         });
 
@@ -838,7 +880,7 @@
           const tallaSeleccionada = document.querySelector('input[name="talla"]:checked').value;
           const itemParaCarrito = {
             ...productoBase,
-            cartItemId: Date.now(),
+            cartItemId: Date.now() + Math.random(),
             talla: tallaSeleccionada,
             nombreJugador,
             numeroJugador,
@@ -859,9 +901,15 @@
         });
 
         cartItemsContainer.addEventListener("click", (e) => {
-          const removeBtn = e.target.closest(".remove-from-cart-btn");
-          if (removeBtn) {
-            quitarDelCarrito(parseInt(removeBtn.dataset.id));
+          const quantityBtn = e.target.closest(".quantity-btn");
+          if (quantityBtn) {
+            const cartItemId = parseFloat(quantityBtn.dataset.id);
+            const action = quantityBtn.dataset.action;
+            const item = carrito.find((i) => i.cartItemId === cartItemId);
+            if (item) {
+              const newQuantity = action === "increment" ? item.cantidad + 1 : item.cantidad - 1;
+              actualizarCantidad(cartItemId, newQuantity);
+            }
           }
           const shopBtn = e.target.closest("#close-and-shop");
           if (shopBtn) {
@@ -871,21 +919,14 @@
 
         categoryFilters.addEventListener("click", (e) => {
           if (e.target.tagName === "BUTTON") {
-            const activeBtn = document.querySelector(".category-btn.active");
-            if (activeBtn) activeBtn.classList.remove("active");
+            document.querySelector(".category-btn.active")?.classList.remove("active");
             e.target.classList.add("active");
-
-            const busquedaActual = searchInput.value.trim();
-            renderizarProductos(e.target.dataset.category, busquedaActual);
+            renderizarProductos();
           }
         });
 
-        searchInput.addEventListener("input", () => {
-          const categoriaActiva =
-            document.querySelector(".category-btn.active")?.dataset.category || "all";
-          const busquedaActual = searchInput.value.trim();
-          renderizarProductos(categoriaActiva, busquedaActual);
-        });
+        searchInput.addEventListener("input", renderizarProductos);
+        sortSelect.addEventListener("change", renderizarProductos);
 
         function abrirModalCarrito() {
           cartModal.classList.remove("opacity-0", "pointer-events-none");
@@ -903,15 +944,24 @@
         whatsappButton.addEventListener("click", enviarPedidoWhatsApp);
 
         cartModal.addEventListener("click", (e) => {
-          if (e.target === cartModal) {
-            cerrarModalCarrito();
-          }
+          if (e.target === cartModal) cerrarModalCarrito();
         });
         optionsModal.addEventListener("click", (e) => {
           if (e.target === optionsModal) cerrarModalOpciones();
         });
 
-        // --- INICIALIZACIÓN ---
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) header.classList.add("nav-scrolled");
+          else header.classList.remove("nav-scrolled");
+          if (window.scrollY > 400) backToTopButton.classList.add("show");
+          else backToTopButton.classList.remove("show");
+        });
+
+        backToTopButton.addEventListener("click", () =>
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        );
+
+        // INICIALIZACIÓN
         AOS.init({ duration: 800, once: true, offset: 50 });
         cargarCarritoDesdeStorage();
         renderizarFiltros();
