@@ -103,7 +103,7 @@
           class="flex items-center space-x-3 text-2xl font-bold text-white tracking-wider"
         >
           <img
-            src="https://placehold.co/100x100/121212/f5c518?text=GS"
+            src="assets/img/logo.jpg"
             alt="Galaxy Sport Logo"
             class="h-10 w-10 rounded-full border-2 border-[var(--secondary)]"
           />
@@ -142,15 +142,12 @@
         id="home"
         class="relative h-[60vh] md:h-[80vh] flex items-center justify-center text-center overflow-hidden"
       >
-        <video
-          autoplay
-          muted
-          loop
-          playsinline
+        <img
+          src="assets/img/hero.gif"
+          alt="Fondo animado de camisetas de fútbol"
           class="absolute inset-0 w-full h-full object-cover filter brightness-50"
-        >
-          <source src="assets/img/video.mp4" type="video/mp4" />
-        </video>
+        />
+
         <div
           class="absolute inset-0 bg-gradient-to-t from-[var(--bg-dark)] via-transparent to-transparent"
         ></div>
@@ -164,6 +161,12 @@
           <p class="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
             Selecciona tus camisetas favoritas y finaliza tu pedido directamente por WhatsApp.
           </p>
+          <a
+            href="#catalog"
+            class="mt-8 inline-block bg-[var(--primary)] text-white font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-[var(--primary)/50%]"
+          >
+            Ver Catálogo
+          </a>
         </div>
       </section>
 
@@ -219,7 +222,7 @@
           class="flex items-center justify-center space-x-3 text-2xl font-bold text-white tracking-wider"
         >
           <img
-            src="https://placehold.co/100x100/121212/f5c518?text=GS"
+            src="assets/img/logo.jpg"
             alt="Galaxy Sport Logo"
             class="h-10 w-10 rounded-full border-2 border-[var(--secondary)]"
           />
@@ -358,6 +361,55 @@
         </div>
       </div>
     </div>
+
+    <!-- Botones flotantes de Redes Sociales (CORREGIDO Y REDIMENSIONADO) -->
+    <div class="fixed bottom-6 right-7 z-50 flex flex-col-reverse items-end gap-3">
+      <!-- Botón Expansor (pequeño) -->
+      <button
+        id="expand-socials-btn"
+        class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 text-white shadow-lg hover:scale-110 transition-transform"
+      >
+        <ion-icon
+          id="expand-socials-icon"
+          name="chevron-up-outline"
+          class="text-xl transition-transform duration-300"
+        ></ion-icon>
+      </button>
+
+      <!-- Botón de Instagram (principal) -->
+      <a
+        href="https://www.instagram.com/tugalaxysport"
+        target="_blank"
+        class="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white shadow-lg hover:scale-110 transition-transform"
+      >
+        <ion-icon name="logo-instagram" class="text-3xl"></ion-icon>
+      </a>
+
+      <!-- Contenedor para redes sociales expandibles -->
+      <div
+        id="more-socials"
+        class="flex flex-col items-end gap-3 transition-all duration-300 max-h-0 opacity-0 overflow-hidden"
+      >
+        <!-- TikTok (secundario) -->
+        <a
+          href="https://www.tiktok.com/@tugalaxysport"
+          target="_blank"
+          class="w-12 h-12 flex items-center justify-center rounded-full bg-black text-white shadow-lg hover:scale-110 transition-transform"
+        >
+          <ion-icon name="logo-tiktok" class="text-2xl"></ion-icon>
+        </a>
+
+        <!-- WhatsApp (secundario) -->
+        <a
+          href="https://wa.me/584121234567"
+          target="_blank"
+          class="w-12 h-12 flex items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 transition-transform"
+        >
+          <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
+        </a>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // =================================================================
@@ -479,8 +531,7 @@
         const optionsForm = document.getElementById("options-form");
         const optionsTitle = document.getElementById("options-title");
         const optionsImage = document.getElementById("options-image");
-        const optionsGallery = document.getElementById("options-gallery"); // <-- Nuevo selector
-        const tallaSelect = document.getElementById("talla-select");
+        const optionsGallery = document.getElementById("options-gallery");
         const personalizacionFields = document.getElementById("personalizacion-fields");
         const playerNameInput = document.getElementById("player-name");
         const playerNumberInput = document.getElementById("player-number");
@@ -497,25 +548,25 @@
           }
           productosFiltrados.forEach((producto) => {
             const productoHTML = `
-                    <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105" data-aos="fade-up">
-                        <div class="relative overflow-hidden">
-                            <img src="${producto.imagen}" alt="${
+                        <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105" data-aos="fade-up">
+                            <div class="relative overflow-hidden">
+                                <img src="${producto.imagen}" alt="${
               producto.nombre
             }" class="w-full h-80 object-cover">
-                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
-                                  producto.id
-                                }">Añadir al Pedido</button>
+                                <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
+                                      producto.id
+                                    }">Añadir al Pedido</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="p-5 text-center">
-                            <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
-                            <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
-                            <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
-                              2
-                            )}</p>
-                        </div>
-                    </div>`;
+                            <div class="p-5 text-center">
+                                <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
+                                <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
+                                <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
+                                  2
+                                )}</p>
+                            </div>
+                        </div>`;
             productGrid.innerHTML += productoHTML;
           });
           AOS.refresh();
@@ -528,7 +579,6 @@
           optionsTitle.textContent = producto.nombre;
           optionsForm.dataset.productId = idProducto;
 
-          // Lógica de la galería
           optionsGallery.innerHTML = "";
           if (producto.galeria && producto.galeria.length > 0) {
             optionsImage.src = producto.galeria[0];
@@ -538,7 +588,7 @@
               thumb.alt = `Vista ${index + 1}`;
               thumb.className =
                 "w-12 h-12 object-cover rounded-md cursor-pointer border-2 hover:border-[var(--primary)] transition-all";
-              thumb.classList.toggle("border-[var(--primary)]", index === 0); // Activar el primer thumbnail
+              thumb.classList.toggle("border-[var(--primary)]", index === 0);
               thumb.dataset.fullSrc = imgUrl;
               optionsGallery.appendChild(thumb);
             });
@@ -549,7 +599,7 @@
           const tallaContainer = document.getElementById("talla-selector-container");
           tallaContainer.innerHTML = "";
           producto.tallas.forEach((talla, index) => {
-            const isChecked = index === 0 ? "checked" : ""; // Selecciona la primera talla por defecto
+            const isChecked = index === 0 ? "checked" : "";
             tallaContainer.innerHTML += `
         <div>
             <input type="radio" id="talla-${talla}" name="talla" value="${talla}" class="talla-radio-input" ${isChecked}>
@@ -603,21 +653,21 @@
               detalles += ` | ${item.nombreJugador} #${item.numeroJugador}`;
             }
             const itemHTML = `
-                    <div class="flex items-center justify-between gap-4 py-3">
-                        <img src="${item.imagen}" alt="${
+                        <div class="flex items-center justify-between gap-4 py-3">
+                            <img src="${item.imagen}" alt="${
               item.nombre
             }" class="w-16 h-16 rounded-md object-cover">
-                        <div class="flex-1">
-                            <h4 class="font-bold">${item.nombre}</h4>
-                            <p class="text-sm text-gray-400">${detalles}</p>
-                            <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
-                              2
-                            )}</p>
-                        </div>
-                        <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
-                          item.cartItemId
-                        }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
-                    </div>`;
+                            <div class="flex-1">
+                                <h4 class="font-bold">${item.nombre}</h4>
+                                <p class="text-sm text-gray-400">${detalles}</p>
+                                <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
+                                  2
+                                )}</p>
+                            </div>
+                            <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
+                              item.cartItemId
+                            }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
+                        </div>`;
             cartItemsContainer.innerHTML += itemHTML;
           });
         }
@@ -686,7 +736,6 @@
           cerrarModalOpciones();
         });
 
-        // <-- Nuevo Listener para la galería
         optionsGallery.addEventListener("click", (e) => {
           if (e.target.tagName === "IMG" && e.target.dataset.fullSrc) {
             optionsImage.src = e.target.dataset.fullSrc;
@@ -733,6 +782,27 @@
 
         AOS.init({ duration: 800, once: true, offset: 50 });
         renderizarProductos();
+
+        // FUNCIONALIDAD BOTONES SOCIALES FLOTANTES
+        const expandSocialsBtn = document.getElementById("expand-socials-btn");
+        const expandSocialsIcon = document.getElementById("expand-socials-icon");
+        const moreSocialsContainer = document.getElementById("more-socials");
+
+        expandSocialsBtn.addEventListener("click", () => {
+          const isExpanded = moreSocialsContainer.style.maxHeight !== "0px";
+
+          if (isExpanded) {
+            // Collapse
+            moreSocialsContainer.style.maxHeight = "0px";
+            moreSocialsContainer.style.opacity = "0";
+            expandSocialsIcon.style.transform = "rotate(0deg)";
+          } else {
+            // Expand
+            moreSocialsContainer.style.maxHeight = "150px"; // Adjust height as needed for more buttons
+            moreSocialsContainer.style.opacity = "1";
+            expandSocialsIcon.style.transform = "rotate(180deg)";
+          }
+        });
       });
     </script>
   </body>
