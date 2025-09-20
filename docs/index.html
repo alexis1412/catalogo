@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galaxy Sport - Catálogo de Pedidos</title>
+    <title>Galaxy Sport - Catálogo de Pedidos 2.0</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,17 +65,17 @@
         background-color: var(--primary);
         color: white;
         transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(196, 73, 87, 0.3);
       }
 
-      /* Estilos para el selector de tallas moderno */
       .talla-radio-input {
-        display: none; /* Oculta el input de radio real */
+        display: none;
       }
       .talla-radio-label {
         display: inline-block;
         padding: 0.5rem 1rem;
         border: 2px solid #4a4a4a;
-        border-radius: 0.5rem; /* rounded-lg */
+        border-radius: 0.5rem;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.2s ease-in-out;
@@ -84,19 +84,53 @@
         border-color: var(--secondary);
         color: var(--secondary);
       }
-      /* Estilo para la talla seleccionada */
       .talla-radio-input:checked + .talla-radio-label {
         background-color: var(--primary);
         border-color: var(--primary);
         color: white;
         transform: scale(1.05);
       }
+
+      /* Estilos para la notificación Toast */
+      #toast-notification {
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      }
+
+      /* Animación para el contador del carrito */
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .cart-pop {
+        animation: pop 0.3s ease-in-out;
+      }
+
+      /* Estilos para el botón de volver arriba */
+      #back-to-top-btn {
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        transform: translateY(20px);
+      }
+      #back-to-top-btn.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
     </style>
   </head>
 
   <body class="antialiased">
     <!-- NAVBAR -->
-    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <header
+      id="header"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/50 backdrop-blur-sm"
+    >
       <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a
           href="#"
@@ -113,20 +147,7 @@
           id="open-cart-button"
           class="relative hover:text-[var(--secondary)] transition-colors duration-300"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
+          <ion-icon name="cart-outline" class="text-3xl"></ion-icon>
           <span
             id="cart-counter"
             class="absolute -top-2 -right-2 bg-[var(--primary)] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
@@ -140,7 +161,7 @@
       <!-- HERO -->
       <section
         id="home"
-        class="relative h-[60vh] md:h-[80vh] flex items-center justify-center text-center overflow-hidden"
+        class="relative h-[85vh] md:h-[95vh] flex items-center justify-center text-center overflow-hidden"
       >
         <img
           src="assets/img/hero.gif"
@@ -163,7 +184,7 @@
           </p>
           <a
             href="#catalog"
-            class="mt-8 inline-block bg-[var(--primary)] text-white font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-[var(--primary)/50%]"
+            class="mt-8 inline-block bg-[var(--primary)] text-white font-bold py-3 px-8 rounded-full text-lg hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg shadow-[var(--primary)/30%] hover:shadow-[var(--primary)/50%]"
           >
             Ver Catálogo
           </a>
@@ -179,35 +200,28 @@
             </h2>
             <p class="text-lg text-gray-400 mt-2">Novedades y clásicos inolvidables.</p>
           </div>
+
+          <!-- Barra de Búsqueda -->
+          <div class="max-w-xl mx-auto mb-12" data-aos="fade-up">
+            <div class="relative">
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Buscar por equipo, liga, jugador..."
+                class="w-full bg-[var(--bg-light)] border-2 border-gray-700 rounded-full py-3 pl-6 pr-14 text-white placeholder-gray-500 focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all"
+              />
+              <div class="absolute inset-y-0 right-0 flex items-center pr-5">
+                <ion-icon name="search-outline" class="text-gray-500 text-2xl"></ion-icon>
+              </div>
+            </div>
+          </div>
+
           <div
             id="category-filters"
             class="flex flex-wrap justify-center gap-3 md:gap-4 mb-12"
             data-aos="fade-up"
           >
-            <button
-              class="category-btn active font-semibold py-2 px-5 rounded-full"
-              data-category="all"
-            >
-              Todos
-            </button>
-            <button
-              class="category-btn font-semibold py-2 px-5 rounded-full"
-              data-category="europa"
-            >
-              Ligas Europeas
-            </button>
-            <button
-              class="category-btn font-semibold py-2 px-5 rounded-full"
-              data-category="selecciones"
-            >
-              Selecciones
-            </button>
-            <button
-              class="category-btn font-semibold py-2 px-5 rounded-full"
-              data-category="sudamerica"
-            >
-              Ligas Sudamericanas
-            </button>
+            <!-- Las categorías se generarán con JS -->
           </div>
           <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
         </div>
@@ -232,6 +246,20 @@
           Tu pasión, nuestra misión. Ofreciendo las mejores camisetas de fútbol con calidad
           garantizada.
         </p>
+
+        <!-- Íconos de redes sociales -->
+        <div class="flex justify-center space-x-6 mt-6">
+          <a href="#" class="text-gray-500 hover:text-[var(--primary)] transition-colors text-3xl"
+            ><ion-icon name="logo-instagram"></ion-icon
+          ></a>
+          <a href="#" class="text-gray-500 hover:text-[var(--primary)] transition-colors text-3xl"
+            ><ion-icon name="logo-facebook"></ion-icon
+          ></a>
+          <a href="#" class="text-gray-500 hover:text-[var(--primary)] transition-colors text-3xl"
+            ><ion-icon name="logo-tiktok"></ion-icon
+          ></a>
+        </div>
+
         <hr class="border-gray-800 my-8" />
         <p class="text-center text-gray-600">
           &copy; 2024 Galaxy Sport. Todos los derechos reservados.
@@ -242,9 +270,10 @@
     <!-- MODAL DEL CARRITO -->
     <div
       id="cart-modal"
-      class="modal fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
+      class="modal fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
     >
       <div
+        id="cart-modal-content"
         class="modal-content bg-[var(--bg-light)] w-full max-w-lg rounded-xl shadow-2xl m-4 transform scale-95"
       >
         <div class="flex justify-between items-center p-5 border-b border-gray-700">
@@ -256,7 +285,7 @@
             &times;
           </button>
         </div>
-        <div id="cart-items" class="p-5 max-h-[25vh] overflow-y-auto"></div>
+        <div id="cart-items" class="p-5 max-h-[40vh] overflow-y-auto"></div>
         <div class="p-5 border-t border-gray-700">
           <div class="flex justify-between items-center mb-4 text-xl">
             <span class="font-semibold">Total:</span>
@@ -264,7 +293,7 @@
           </div>
           <button
             id="whatsapp-button"
-            class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-colors"
+            class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
             <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
             Confirmar Pedido por WhatsApp
@@ -273,10 +302,10 @@
       </div>
     </div>
 
-    <!-- MODAL DE OPCIONES DE PRODUCTO (CON GALERÍA) -->
+    <!-- MODAL DE OPCIONES DE PRODUCTO -->
     <div
       id="options-modal"
-      class="modal fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
+      class="modal fixed inset-0 z-[70] flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none"
     >
       <div
         id="options-modal-content"
@@ -353,7 +382,7 @@
             type="submit"
             form="options-form"
             id="add-from-options-btn"
-            class="w-full bg-[var(--primary)] text-white font-bold py-3 px-6 rounded-xl text-lg flex items-center justify-center gap-3 hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-[var(--primary)/50%]"
+            class="w-full bg-[var(--primary)] text-white font-bold py-3 px-6 rounded-xl text-lg flex items-center justify-center gap-3 hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg shadow-[var(--primary)/30%] hover:shadow-[var(--primary)/50%]"
           >
             <ion-icon name="add-circle-outline" class="text-2xl"></ion-icon>
             Añadir al Pedido
@@ -362,62 +391,26 @@
       </div>
     </div>
 
-    <!-- Botones flotantes de Redes Sociales (CORREGIDO Y REDIMENSIONADO) -->
-    <div class="fixed bottom-6 right-7 z-50 flex flex-col-reverse items-end gap-3">
-      <!-- Botón Expansor (pequeño) -->
-      <button
-        id="expand-socials-btn"
-        class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 text-white shadow-lg hover:scale-110 transition-transform"
-      >
-        <ion-icon
-          id="expand-socials-icon"
-          name="chevron-up-outline"
-          class="text-xl transition-transform duration-300"
-        ></ion-icon>
-      </button>
-
-      <!-- Botón de Instagram (principal) -->
-      <a
-        href="https://www.instagram.com/tugalaxysport"
-        target="_blank"
-        class="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white shadow-lg hover:scale-110 transition-transform"
-      >
-        <ion-icon name="logo-instagram" class="text-3xl"></ion-icon>
-      </a>
-
-      <!-- Contenedor para redes sociales expandibles -->
-      <div
-        id="more-socials"
-        class="flex flex-col items-end gap-3 transition-all duration-300 max-h-0 opacity-0 overflow-hidden"
-      >
-        <!-- TikTok (secundario) -->
-        <a
-          href="https://www.tiktok.com/@tugalaxysport"
-          target="_blank"
-          class="w-12 h-12 flex items-center justify-center rounded-full bg-black text-white shadow-lg hover:scale-110 transition-transform"
-        >
-          <ion-icon name="logo-tiktok" class="text-2xl"></ion-icon>
-        </a>
-
-        <!-- WhatsApp (secundario) -->
-        <a
-          href="https://wa.me/584121234567"
-          target="_blank"
-          class="w-12 h-12 flex items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 transition-transform"
-        >
-          <ion-icon name="logo-whatsapp" class="text-2xl"></ion-icon>
-        </a>
-      </div>
+    <!-- Contenedor para notificaciones Toast -->
+    <div
+      id="toast-notification"
+      class="fixed bottom-5 right-5 z-[100] bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg flex items-center gap-3 transform translate-y-20 opacity-0 pointer-events-none"
+    >
+      <ion-icon name="checkmark-circle-outline" class="text-2xl"></ion-icon>
+      <span id="toast-message"></span>
     </div>
+
+    <!-- Botón para volver arriba -->
+    <button
+      id="back-to-top-btn"
+      class="fixed bottom-8 right-8 z-[55] bg-[var(--primary)] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:opacity-80 transition-all opacity-0 pointer-events-none"
+    >
+      <ion-icon name="arrow-up-outline" class="text-2xl"></ion-icon>
+    </button>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // =================================================================
-        // ===== 1. CONFIGURACIÓN: MODIFICA ESTA SECCIÓN ===================
-        // =================================================================
-
-        const tuNumeroDeWhatsApp = "584121234567";
-
+        // CORRECCIÓN: Se mueven los datos de los productos aquí para evitar errores de carga.
         const productos = [
           {
             id: 1,
@@ -434,6 +427,8 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L", "XL"],
+            nuevo: true,
+            tags: ["barcelona", "barça", "la liga", "españa"],
           },
           {
             id: 2,
@@ -445,6 +440,8 @@
             categoria: "europa",
             personalizable: false,
             tallas: ["M", "L"],
+            nuevo: false,
+            tags: ["juventus", "juve", "serie a", "italia"],
           },
           {
             id: 3,
@@ -457,6 +454,8 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L", "XL"],
+            nuevo: false,
+            tags: ["villarreal", "la liga", "españa"],
           },
           {
             id: 4,
@@ -472,6 +471,8 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L", "XL"],
+            nuevo: false,
+            tags: ["real madrid", "halamadrid", "la liga", "españa"],
           },
           {
             id: 5,
@@ -483,6 +484,8 @@
             categoria: "europa",
             personalizable: false,
             tallas: ["L"],
+            nuevo: true,
+            tags: ["atletico madrid", "atleti", "barrios", "la liga"],
           },
           {
             id: 6,
@@ -495,6 +498,8 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L"],
+            nuevo: false,
+            tags: ["borussia", "dortmund", "bvb", "bundesliga", "alemania"],
           },
           {
             id: 7,
@@ -507,8 +512,16 @@
             personalizable: true,
             costoPersonalizacion: 5.0,
             tallas: ["S", "M", "L", "XL"],
+            nuevo: false,
+            tags: ["psg", "paris", "ligue 1", "francia", "mbappe"],
           },
         ];
+
+        // =================================================================
+        // ===== 1. CONFIGURACIÓN ==========================================
+        // =================================================================
+
+        const tuNumeroDeWhatsApp = "584121234567";
 
         // =================================================================
         // ===== FIN DE LA CONFIGURACIÓN ===================================
@@ -517,6 +530,7 @@
         let carrito = [];
         const productGrid = document.getElementById("product-grid");
         const categoryFilters = document.getElementById("category-filters");
+        const searchInput = document.getElementById("search-input");
 
         const openCartButton = document.getElementById("open-cart-button");
         const closeCartButton = document.getElementById("close-cart-button");
@@ -536,37 +550,125 @@
         const playerNameInput = document.getElementById("player-name");
         const playerNumberInput = document.getElementById("player-number");
 
-        function renderizarProductos(categoriaFiltro = "all") {
+        const toast = document.getElementById("toast-notification");
+        const toastMessage = document.getElementById("toast-message");
+        const header = document.getElementById("header");
+        const backToTopButton = document.getElementById("back-to-top-btn");
+
+        // --- MANEJADORES DE EVENTOS GLOBALES ---
+
+        window.addEventListener("scroll", () => {
+          // Efecto de scroll en la barra de navegación
+          if (window.scrollY > 50) {
+            header.classList.add("nav-scrolled");
+          } else {
+            header.classList.remove("nav-scrolled");
+          }
+
+          // Mostrar/ocultar botón de volver arriba
+          if (window.scrollY > 400) {
+            backToTopButton.classList.add("show");
+          } else {
+            backToTopButton.classList.remove("show");
+          }
+        });
+
+        // Evento click para el botón de volver arriba
+        backToTopButton.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+
+        // --- FUNCIONES DE LA APLICACIÓN ---
+
+        function cargarCarritoDesdeStorage() {
+          const carritoGuardado = localStorage.getItem("galaxySportCart");
+          if (carritoGuardado) {
+            carrito = JSON.parse(carritoGuardado);
+            actualizarCarrito();
+          }
+        }
+
+        function guardarCarritoEnStorage() {
+          localStorage.setItem("galaxySportCart", JSON.stringify(carrito));
+        }
+
+        function mostrarToast(mensaje) {
+          toastMessage.textContent = mensaje;
+          toast.classList.remove("translate-y-20", "opacity-0");
+          setTimeout(() => {
+            toast.classList.add("translate-y-20", "opacity-0");
+          }, 3000);
+        }
+
+        function renderizarFiltros() {
+          const categorias = ["all", ...new Set(productos.map((p) => p.categoria))];
+          categoryFilters.innerHTML = "";
+          categorias.forEach((cat) => {
+            let nombreAmigable = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/_/g, " ");
+            if (cat === "all") nombreAmigable = "Todos";
+
+            const button = document.createElement("button");
+            button.className = "category-btn font-semibold py-2 px-5 rounded-full";
+            button.textContent = nombreAmigable;
+            button.dataset.category = cat;
+            if (cat === "all") button.classList.add("active");
+            categoryFilters.appendChild(button);
+          });
+        }
+
+        function renderizarProductos(filtro = "all", busqueda = "") {
           productGrid.innerHTML = "";
-          const productosFiltrados =
-            categoriaFiltro === "all"
-              ? productos
-              : productos.filter((p) => p.categoria === categoriaFiltro);
+
+          let productosFiltrados = productos;
+
+          if (filtro !== "all") {
+            productosFiltrados = productosFiltrados.filter((p) => p.categoria === filtro);
+          }
+
+          if (busqueda) {
+            busqueda = busqueda.toLowerCase();
+            productosFiltrados = productosFiltrados.filter(
+              (p) =>
+                p.nombre.toLowerCase().includes(busqueda) ||
+                p.descripcion.toLowerCase().includes(busqueda) ||
+                (p.tags && p.tags.some((tag) => tag.toLowerCase().includes(busqueda)))
+            );
+          }
+
           if (productosFiltrados.length === 0) {
-            productGrid.innerHTML = `<p class="col-span-full text-center text-gray-400 text-lg">No hay productos en esta categoría.</p>`;
+            productGrid.innerHTML = `<p class="col-span-full text-center text-gray-400 text-lg">No se encontraron productos.</p>`;
             return;
           }
+
           productosFiltrados.forEach((producto) => {
             const productoHTML = `
-                        <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105" data-aos="fade-up">
-                            <div class="relative overflow-hidden">
-                                <img src="${producto.imagen}" alt="${
+                <div class="bg-[var(--bg-light)] rounded-xl overflow-hidden shadow-lg group transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[var(--primary)/20%]" data-aos="fade-up">
+                    <div class="relative overflow-hidden">
+                        ${
+                          producto.nuevo
+                            ? '<span class="absolute top-3 left-3 bg-[var(--secondary)] text-black text-xs font-bold px-3 py-1 rounded-full z-10">NUEVO</span>'
+                            : ""
+                        }
+                        <img src="${producto.imagen}" alt="${
               producto.nombre
-            }" class="w-full h-80 object-cover">
-                                <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
-                                      producto.id
-                                    }">Añadir al Pedido</button>
-                                </div>
-                            </div>
-                            <div class="p-5 text-center">
-                                <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
-                                <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
-                                <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
-                                  2
-                                )}</p>
-                            </div>
-                        </div>`;
+            }" loading="lazy" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button class="open-options-btn text-white text-lg bg-[var(--primary)] py-2 px-6 rounded-full hover:bg-[var(--secondary)] hover:text-black font-semibold" data-id="${
+                              producto.id
+                            }">Añadir al Pedido</button>
+                        </div>
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="text-xl font-bold text-white">${producto.nombre}</h3>
+                        <p class="text-[var(--text-dark)] mt-1">${producto.descripcion}</p>
+                        <p class="text-2xl font-bold text-[var(--secondary)] mt-2">$${producto.precio.toFixed(
+                          2
+                        )}</p>
+                    </div>
+                </div>`;
             productGrid.innerHTML += productoHTML;
           });
           AOS.refresh();
@@ -587,7 +689,7 @@
               thumb.src = imgUrl;
               thumb.alt = `Vista ${index + 1}`;
               thumb.className =
-                "w-12 h-12 object-cover rounded-md cursor-pointer border-2 hover:border-[var(--primary)] transition-all";
+                "w-12 h-12 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-[var(--primary)] transition-all";
               thumb.classList.toggle("border-[var(--primary)]", index === 0);
               thumb.dataset.fullSrc = imgUrl;
               optionsGallery.appendChild(thumb);
@@ -601,11 +703,10 @@
           producto.tallas.forEach((talla, index) => {
             const isChecked = index === 0 ? "checked" : "";
             tallaContainer.innerHTML += `
-        <div>
-            <input type="radio" id="talla-${talla}" name="talla" value="${talla}" class="talla-radio-input" ${isChecked}>
-            <label for="talla-${talla}" class="talla-radio-label">${talla}</label>
-        </div>
-    `;
+              <div>
+                <input type="radio" id="talla-${talla}-${producto.id}" name="talla" value="${talla}" class="talla-radio-input" ${isChecked}>
+                <label for="talla-${talla}-${producto.id}" class="talla-radio-label">${talla}</label>
+              </div>`;
           });
 
           if (producto.personalizable) {
@@ -629,45 +730,53 @@
         function agregarAlCarrito(item) {
           carrito.push(item);
           actualizarCarrito();
+          mostrarToast("¡Agregado al pedido!");
         }
         function quitarDelCarrito(cartItemId) {
           carrito = carrito.filter((item) => item.cartItemId !== cartItemId);
           actualizarCarrito();
+          mostrarToast("Producto eliminado.");
         }
         function actualizarCarrito() {
           renderizarItemsCarrito();
           actualizarTotal();
           actualizarContadorCarrito();
+          guardarCarritoEnStorage();
         }
 
         function renderizarItemsCarrito() {
           cartItemsContainer.innerHTML = "";
           if (carrito.length === 0) {
-            cartItemsContainer.innerHTML =
-              '<p class="text-gray-400 text-center">Tu pedido está vacío.</p>';
+            cartItemsContainer.innerHTML = `<div class="text-center py-8">
+                  <ion-icon name="sad-outline" class="text-6xl text-gray-600"></ion-icon>
+                  <p class="text-gray-400 mt-2">Tu pedido está vacío.</p>
+                  <button id="close-and-shop" class="mt-4 bg-[var(--primary)] text-white font-bold py-2 px-6 rounded-full text-md hover:opacity-90 transition-all">Empezar a comprar</button>
+               </div>`;
+            whatsappButton.disabled = true;
             return;
           }
+          whatsappButton.disabled = false;
           carrito.forEach((item) => {
             let detalles = `Talla: ${item.talla}`;
             if (item.nombreJugador) {
               detalles += ` | ${item.nombreJugador} #${item.numeroJugador}`;
             }
             const itemHTML = `
-                        <div class="flex items-center justify-between gap-4 py-3">
-                            <img src="${item.imagen}" alt="${
+                <div class="flex items-center justify-between gap-4 py-3">
+                    <img src="${item.imagen}" alt="${
               item.nombre
             }" class="w-16 h-16 rounded-md object-cover">
-                            <div class="flex-1">
-                                <h4 class="font-bold">${item.nombre}</h4>
-                                <p class="text-sm text-gray-400">${detalles}</p>
-                                <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
-                                  2
-                                )}</p>
-                            </div>
-                            <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
-                              item.cartItemId
-                            }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
-                        </div>`;
+                    <div class="flex-1">
+                        <h4 class="font-bold">${item.nombre}</h4>
+                        <p class="text-sm text-gray-400">${detalles}</p>
+                        <p class="text-[var(--secondary)] font-semibold">$${item.precioFinal.toFixed(
+                          2
+                        )}</p>
+                    </div>
+                    <button class="remove-from-cart-btn text-gray-500 hover:text-red-500 transition-colors" data-id="${
+                      item.cartItemId
+                    }"><ion-icon name="trash-outline" class="text-2xl"></ion-icon></button>
+                </div>`;
             cartItemsContainer.innerHTML += itemHTML;
           });
         }
@@ -678,26 +787,29 @@
         }
 
         function actualizarContadorCarrito() {
-          cartCounter.textContent = carrito.length;
+          const totalItems = carrito.length;
+          cartCounter.textContent = totalItems;
+          if (totalItems > 0 && document.activeElement.closest(".open-options-btn")) {
+            cartCounter.classList.add("cart-pop");
+            setTimeout(() => cartCounter.classList.remove("cart-pop"), 300);
+          }
         }
 
         function enviarPedidoWhatsApp() {
-          if (carrito.length === 0) {
-            alert("Tu pedido está vacío.");
-            return;
-          }
+          if (carrito.length === 0) return;
           let mensaje =
             "¡Hola Galaxy Sport! 👋 Quiero hacer un pedido con los siguientes productos:\n\n";
           carrito.forEach((item) => {
-            let detalleItem = `- ${item.nombre} (Talla: ${item.talla}`;
+            let detalleItem = `*- ${item.nombre}*\n`;
+            detalleItem += `  Talla: ${item.talla}\n`;
             if (item.nombreJugador && item.numeroJugador) {
-              detalleItem += `, Nombre: ${item.nombreJugador}, #${item.numeroJugador}`;
+              detalleItem += `  Personalización: ${item.nombreJugador}, #${item.numeroJugador}\n`;
             }
-            detalleItem += `) - $${item.precioFinal.toFixed(2)}\n`;
+            detalleItem += `  Precio: $${item.precioFinal.toFixed(2)}\n\n`;
             mensaje += detalleItem;
           });
           const total = carrito.reduce((acc, item) => acc + item.precioFinal, 0);
-          mensaje += `\n*Total a pagar: $${total.toFixed(
+          mensaje += `*Total a pagar: $${total.toFixed(
             2
           )}*\n\nEspero su respuesta para coordinar. ¡Gracias!`;
           const urlWhatsApp = `https://wa.me/${tuNumeroDeWhatsApp}?text=${encodeURIComponent(
@@ -747,62 +859,63 @@
         });
 
         cartItemsContainer.addEventListener("click", (e) => {
-          const btn = e.target.closest(".remove-from-cart-btn");
-          if (btn) {
-            quitarDelCarrito(parseInt(btn.dataset.id));
+          const removeBtn = e.target.closest(".remove-from-cart-btn");
+          if (removeBtn) {
+            quitarDelCarrito(parseInt(removeBtn.dataset.id));
+          }
+          const shopBtn = e.target.closest("#close-and-shop");
+          if (shopBtn) {
+            cerrarModalCarrito();
           }
         });
+
         categoryFilters.addEventListener("click", (e) => {
           if (e.target.tagName === "BUTTON") {
             const activeBtn = document.querySelector(".category-btn.active");
             if (activeBtn) activeBtn.classList.remove("active");
             e.target.classList.add("active");
-            renderizarProductos(e.target.dataset.category);
+
+            const busquedaActual = searchInput.value.trim();
+            renderizarProductos(e.target.dataset.category, busquedaActual);
           }
         });
-        openCartButton.addEventListener("click", () => {
+
+        searchInput.addEventListener("input", () => {
+          const categoriaActiva =
+            document.querySelector(".category-btn.active")?.dataset.category || "all";
+          const busquedaActual = searchInput.value.trim();
+          renderizarProductos(categoriaActiva, busquedaActual);
+        });
+
+        function abrirModalCarrito() {
           cartModal.classList.remove("opacity-0", "pointer-events-none");
           document.getElementById("cart-modal-content").classList.remove("scale-95");
-        });
-        closeCartButton.addEventListener("click", () => {
+        }
+
+        function cerrarModalCarrito() {
           cartModal.classList.add("opacity-0", "pointer-events-none");
           document.getElementById("cart-modal-content").classList.add("scale-95");
-        });
+        }
+
+        openCartButton.addEventListener("click", abrirModalCarrito);
+        closeCartButton.addEventListener("click", cerrarModalCarrito);
         closeOptionsButton.addEventListener("click", cerrarModalOpciones);
         whatsappButton.addEventListener("click", enviarPedidoWhatsApp);
+
         cartModal.addEventListener("click", (e) => {
           if (e.target === cartModal) {
-            cartModal.classList.add("opacity-0", "pointer-events-none");
-            document.getElementById("cart-modal-content").classList.add("scale-95");
+            cerrarModalCarrito();
           }
         });
         optionsModal.addEventListener("click", (e) => {
           if (e.target === optionsModal) cerrarModalOpciones();
         });
 
+        // --- INICIALIZACIÓN ---
         AOS.init({ duration: 800, once: true, offset: 50 });
+        cargarCarritoDesdeStorage();
+        renderizarFiltros();
         renderizarProductos();
-
-        // FUNCIONALIDAD BOTONES SOCIALES FLOTANTES
-        const expandSocialsBtn = document.getElementById("expand-socials-btn");
-        const expandSocialsIcon = document.getElementById("expand-socials-icon");
-        const moreSocialsContainer = document.getElementById("more-socials");
-
-        expandSocialsBtn.addEventListener("click", () => {
-          const isExpanded = moreSocialsContainer.style.maxHeight !== "0px";
-
-          if (isExpanded) {
-            // Collapse
-            moreSocialsContainer.style.maxHeight = "0px";
-            moreSocialsContainer.style.opacity = "0";
-            expandSocialsIcon.style.transform = "rotate(0deg)";
-          } else {
-            // Expand
-            moreSocialsContainer.style.maxHeight = "150px"; // Adjust height as needed for more buttons
-            moreSocialsContainer.style.opacity = "1";
-            expandSocialsIcon.style.transform = "rotate(180deg)";
-          }
-        });
       });
     </script>
   </body>
